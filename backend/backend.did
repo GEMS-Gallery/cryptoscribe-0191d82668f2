@@ -1,17 +1,16 @@
 type Result = 
  variant {
    err: text;
-   ok: Post;
+   ok: MaintenanceItem;
  };
-type Post = 
+type MaintenanceItem = 
  record {
-   author: text;
-   body: text;
+   currentHours: float64;
    id: nat;
-   timestamp: int;
+   nextDue: text;
    title: text;
  };
 service : {
-  createPost: (text, text, text) -> (Result);
-  getPosts: () -> (vec Post) query;
+  createItem: (text, text, float64) -> (Result);
+  getItems: () -> (vec MaintenanceItem) query;
 }

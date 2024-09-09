@@ -1,3 +1,5 @@
+import Float "mo:base/Float";
+
 import Array "mo:base/Array";
 import Time "mo:base/Time";
 import Result "mo:base/Result";
@@ -6,33 +8,29 @@ import Int "mo:base/Int";
 import Nat "mo:base/Nat";
 
 actor {
-  type Post = {
+  type MaintenanceItem = {
     id: Nat;
     title: Text;
-    body: Text;
-    author: Text;
-    timestamp: Int;
+    nextDue: Text;
+    currentHours: Float;
   };
 
-  stable var posts : [Post] = [];
+  stable var items : [MaintenanceItem] = [];
   stable var nextId : Nat = 0;
 
-  public func createPost(title: Text, body: Text, author: Text) : async Result.Result<Post, Text> {
-    let post : Post = {
+  public func createItem(title: Text, nextDue: Text, currentHours: Float) : async Result.Result<MaintenanceItem, Text> {
+    let item : MaintenanceItem = {
       id = nextId;
       title = title;
-      body = body;
-      author = author;
-      timestamp = Time.now();
+      nextDue = nextDue;
+      currentHours = currentHours;
     };
-    posts := Array.append(posts, [post]);
+    items := Array.append(items, [item]);
     nextId += 1;
-    #ok(post)
+    #ok(item)
   };
 
-  public query func getPosts() : async [Post] {
-    Array.sort(posts, func(a: Post, b: Post) : { #less; #equal; #greater } {
-      Int.compare(b.timestamp, a.timestamp)
-    })
+  public query func getItems() : async [MaintenanceItem] {
+    items
   };
 }

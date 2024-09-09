@@ -1,15 +1,14 @@
 export const idlFactory = ({ IDL }) => {
-  const Post = IDL.Record({
+  const MaintenanceItem = IDL.Record({
     'id' : IDL.Nat,
     'title' : IDL.Text,
-    'body' : IDL.Text,
-    'author' : IDL.Text,
-    'timestamp' : IDL.Int,
+    'currentHours' : IDL.Float64,
+    'nextDue' : IDL.Text,
   });
-  const Result = IDL.Variant({ 'ok' : Post, 'err' : IDL.Text });
+  const Result = IDL.Variant({ 'ok' : MaintenanceItem, 'err' : IDL.Text });
   return IDL.Service({
-    'createPost' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [Result], []),
-    'getPosts' : IDL.Func([], [IDL.Vec(Post)], ['query']),
+    'createItem' : IDL.Func([IDL.Text, IDL.Text, IDL.Float64], [Result], []),
+    'getItems' : IDL.Func([], [IDL.Vec(MaintenanceItem)], ['query']),
   });
 };
 export const init = ({ IDL }) => { return []; };
